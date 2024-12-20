@@ -1,7 +1,12 @@
-import json, random
-from os.path import join 
-from Question import Question
+import csv
+import json
+import random
+import re
+from datetime import datetime
+from os.path import join
+
 from Exam import Exam
+from Question import Question
 
 
 def load_json(file):
@@ -12,39 +17,49 @@ def save_json(data, file):
     with open(file, 'w') as f:
         json.dump(data, f, indent=4)
 
+def validate_date(date_str):
+    if date_str is None:
+        return True
+    return re.match(r'^\d{6}$', date_str) is not None
 
 class ExamManager:
-    def __init__(self, exam_database):
+    def __init__(self, database_folder_path):
         """
         Initialize the ExamManager with the path to the exam database folder.
-        The folder should contain the following JSON files:
-        - Questions.json
+        The folder should contain the following files:
+        - Questions.csv
         - Points.json
         - Requirements.json
         """
-        self.questions_file = join(exam_database, "Questions.json")
-        self.points_file = join(exam_database, "Points.json")
-        self.requirements_file = join(exam_database, "Requirements.json")
+        self.questions_file = join(database_folder_path, "Questions.csv")
+        self.points_file = join(database_folder_path, "Points.json")
+        self.requirements_file = join(database_folder_path, "Requirements.json")
         self.questions = self.load_questions(self.questions_file)
         self.points = load_json(self.points_file)
         self.requirements = load_json(self.requirements_file)
 
     def load_questions(self, file):
-        data = load_json(file)
         questions = []
-        for type, q_list in data.items():
-            for question in q_list:
+        with open(file, 'r') as f:
+            reader = csv.DictReader(f, delimiter=';')
+            for row in reader:
+                last = row.get("last", None)
+                if last:
+                    if not validate_date(last):
+                        raise ValueError(f"Invalid date format for 'last': {last}")
+                else:
+                    last = datetime.now().strftime(r'%y%m%d')
                 questions.append(Question(
-                    title=question["title"],
-                    text=question["text"],
-                    solution=question["solution"],
-                    topic=question["topic"],
-                    explanation=question["explanation"],
-                    use_count=question.get("use_count", 0),
-                    last_used=question.get("last_used", None),
-                    points=question.get("points", 1),
-                    type=type,
-                    status=question.get("status", "Accepted")
+                    type=row["type"],
+                    topic=row["topic"],
+                    title=row["title"],
+                    wording=row["wording"],
+                    choices=row["choices"],
+                    solution=row["solution"],
+                    explanation=row["explanation"],
+                    status=row["status"],
+                    counter=int(row.get("counter", 0)),
+                    last=last
                 ))
         return questions
 
@@ -56,7 +71,7 @@ class ExamManager:
                     [q for q in self.questions 
                      if q.type == type 
                      and q.topic == topic],
-                    key=lambda q: q.use_count
+                    key=lambda q: q.counter
                 )
                 if len(question_pool) < count:
                     raise ValueError(
@@ -100,19 +115,19 @@ class ExamManager:
 
     def confirm_exam(self, exam):
         exam.to_markdown()
-        exam.to_json()
+        exam.to_csv()
         exam.to_pdf()
         for question in exam.questions:
-            question.increment_use_count()
+            question.increment_counter()
         self.save_questions()
 
     def save_questions(self):
-        data = {}
-        for question in self.questions:
-            if question.type not in data:
-                data[question.type] = []
-            data[question.type].append(question.to_dict())
-        save_json(data, self.questions_file)
+        with open(self.questions_file, 'w', newline='') as f:
+            fieldnames = ["type", "topic", "title", "wording", "choices", "solution", "explanation", "status", "counter", "last"]
+            writer = csv.DictWriter(f, fieldnames=fieldnames, delimiter=';')
+            writer.writeheader()
+            for question in self.questions:
+                writer.writerow(question.to_dict())
 
     def replace_question(self, exam, index_to_replace):
         question_to_replace = exam.questions[index_to_replace - 1]
@@ -131,7 +146,6 @@ class ExamManager:
         replacement_question = random.choice(question_pool)
         exam.replace_question(index_to_replace - 1, replacement_question)
         return True
-
 
 if __name__ == "__main__":
     manager = ExamManager(".")

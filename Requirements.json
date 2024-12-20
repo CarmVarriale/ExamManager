@@ -1,15 +1,15 @@
 {
-  "lift": {
+  "climb": {
     "true_false": 2,
     "multiple_choice": 1,
     "numerical": 1
   },
-  "climb-descent": {
+  "cruise": {
     "true_false": 2,
     "multiple_choice": 1,
     "numerical": 1
   },
-  "performance": {
+  "turn": {
     "true_false": 2,
     "multiple_choice": 1,
     "numerical": 1
