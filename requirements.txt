@@ -2,4 +2,4 @@
 python==3.8
 
 # External dependencies
-fpdf
+fpdf==1.7.2
