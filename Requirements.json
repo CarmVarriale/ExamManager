@@ -1,0 +1,17 @@
+{
+  "lift": {
+    "true_false": 2,
+    "multiple_choice": 1,
+    "numerical": 1
+  },
+  "climb-descent": {
+    "true_false": 2,
+    "multiple_choice": 1,
+    "numerical": 1
+  },
+  "performance": {
+    "true_false": 2,
+    "multiple_choice": 1,
+    "numerical": 1
+  }
+}
