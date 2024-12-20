@@ -30,3 +30,8 @@ The `review_exam` method starts an interactive review session with the user.
 - **Markdown**: The exam blueprint is exported to a Markdown file.
 - **JSON**: The exam blueprint is exported to a JSON file.
 - **PDF**: The exam blueprint is exported to a PDF file.
+
+## TODO
+
+- [ ] Develop functionalities to export the solution code for numerical questions in a way that can be copy-pasted easily to platforms such as Ans
+- [ ] Provide a comprehensive example of database files, with at least three questions per type per topic
