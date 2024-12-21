@@ -1,5 +1,5 @@
 import json
-import csv
+import pandas as pd
 from fpdf import FPDF
 
 from Question import Question
@@ -68,13 +68,9 @@ class Exam:
         return [q.to_dict() for q in self.questions]
 
     def to_csv(self):
+        df = pd.DataFrame(self.to_dict())
         filename = f"Exam_{self.name}_Blueprint.csv"
-        with open(filename, 'w', newline='') as f:
-            fieldnames = ["type", "topic", "title", "wording", "choices", "solution", "explanation", "status", "counter", "last"]
-            writer = csv.DictWriter(f, fieldnames=fieldnames, delimiter=';')
-            writer.writeheader()
-            for question in self.questions:
-                writer.writerow(question.to_dict())
+        df.to_csv(filename, sep=';', index=False)
     
     def to_markdown(self):
         blueprint = {}

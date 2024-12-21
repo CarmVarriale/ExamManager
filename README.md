@@ -8,7 +8,7 @@ It provides functionalities to load question banks from a CSV file, create exams
 - **ExamManager.py**: Contains the `ExamManager` class, which handles loading question banks, creating exam instances, reviewing questions, replacing questions, and approving exams. It also includes an example of use.
 - **Exam.py**: Contains the `Exam` class, which represents an exam and provides low-level methods to add, replace, and export questions.
 - **Question.py**: Contains the `Question` class, which represents a question and provides methods to increment use count, update the last date it was used, and convert to dictionary format.
-- **Questions.csv**: A CSV file containing an example database of questions categorized by type.
+- **Questions.ssv**: A semicolon separated CSV file containing an example database of questions categorized by type.
 - **Points.json**: A JSON file containing an example for the points assigned to each type of question.
 - **Requirements.json**: A JSON file containing an example of requirements for creating an exam.
 
@@ -17,7 +17,7 @@ It provides functionalities to load question banks from a CSV file, create exams
 ```python
 manager = ExamManager("path/to/database/folder")
 ```
-The database folder should contain the following files: `Questions.csv`, `Points.json`, `Requirements.json`
+The database folder should contain the following files: `Questions.ssv`, `Points.json`, `Requirements.json`
 
 ```python
 exam = manager.create_exam("ExamName/Type/Date")
@@ -34,7 +34,7 @@ The `review_exam` method starts an interactive review session with the user.
 ## TODO
 
 - [x] Provide a comprehensive example of database files, with at least three questions per type per topic
-- [ ] Find a way to store the Python solution code for numerical questions
+- [ ] Store the Python solution code in one string for numerical questions
 - [ ] Include solutions in the CSV database for all question types
 - [ ] Include explanations in the CSV database for all question types
 - [ ] Print solutions in the blueprint
