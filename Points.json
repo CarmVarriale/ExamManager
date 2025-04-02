@@ -1,12 +1,12 @@
 {
   "true_false": {
-    "default": 1
+    "default": 0.5
   },
   "multiple_choice": {
     "default": 2
   },
   "numerical": {
     "default": 3,
-    "performance": 4
+    "modelling": 5
   }
 }
