@@ -6,7 +6,6 @@ __pycache__/
 *.pdf
 *.txt
 *.csv
-*.csv
 *.md
 
 # C extensions
