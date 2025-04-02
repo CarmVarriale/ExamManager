@@ -8,7 +8,7 @@ It provides functionalities to load question banks from a CSV file, create exams
 - **ExamManager.py**: Contains the `ExamManager` class, which handles loading question banks, creating exam instances, reviewing questions, replacing questions, and approving exams. It also includes an example of use.
 - **Exam.py**: Contains the `Exam` class, which represents an exam and provides low-level methods to add, replace, and export questions.
 - **Question.py**: Contains the `Question` class, which represents a question and provides methods to increment use count, update the last date it was used, and convert to dictionary format.
-- **Questions.ssv**: A semicolon separated CSV file collecting questions and their relevant data categorized by type. You can easily view it and manipulate it in VSCode using the Rainbow CSV extension. 
+- **Questions.ssv**: A semicolon separated CSV file collecting questions and their relevant data categorized by type.
 - **Points.json**: A JSON file indicating the points assigned to each type of question.
 - **Structure.json**: A JSON file indicating the number of question and question types per topic to be used to assemble a given exam.
 
@@ -24,6 +24,11 @@ exam = manager.create_exam("ExamName/Type/Date")
 manager.review_exam(exam)
 ```
 The `review_exam` method starts an interactive review session with the user.
+
+## Managing the Question Bank
+You can view the `Questions.ssv` file and manipulate it by opening it in:
+- VSCode using the Rainbow CSV extension. 
+- Microsoft Excel, selecting the first (and only) column and using the Data ⇾ Text to Columns ⇾ Delimiter ⇾ Semicolon wizard.
 
 ## Export Formats
 
