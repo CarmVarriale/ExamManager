@@ -19,14 +19,14 @@ class ExamManager:
         The folder should contain the following files:
         - Questions.ssv
         - Points.json
-        - Requirements.json
+        - Structure.json
         """
         self.questions_file = join(database_folder_path, "Questions.ssv")
         self.points_file = join(database_folder_path, "Points.json")
-        self.requirements_file = join(database_folder_path, "Requirements.json")
+        self.structure_file = join(database_folder_path, "Structure.json")
         self.questions = self.load_questions(self.questions_file)
         self.points = load_json(self.points_file)
-        self.requirements = load_json(self.requirements_file)
+        self.requirements = load_json(self.structure_file)
 
     def load_questions(self, file):
         df = pd.read_csv(file, delimiter=';', dtype=str)
