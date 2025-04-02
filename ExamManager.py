@@ -142,6 +142,6 @@ class ExamManager:
 
 if __name__ == "__main__":
     manager = ExamManager(".")
-    manager.sort_questions("type", "topic", "title")
+    manager.sort_questions("topic","type","title")
     exam = manager.create_exam("AE2230-I_Resit2_241204")
     manager.review_exam(exam)
