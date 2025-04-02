@@ -26,7 +26,7 @@ manager.review_exam(exam)
 The `review_exam` method starts an interactive review session with the user.
 
 ## Managing the Question Bank
-You can view the `Questions.ssv` file and manipulate it by opening it in VSCode using the [Rainbow CSV](https://marketplace.visualstudio.com/items?itemName=mechatroner.rainbow-csv) and the [Edit CSV](https://marketplace.visualstudio.com/items?itemName=janisdd.vscode-edit-csv) extensions. 
+You can view and manipulate the `Questions.ssv` file by opening it in VSCode using the [Rainbow CSV](https://marketplace.visualstudio.com/items?itemName=mechatroner.rainbow-csv) and the [Edit CSV](https://marketplace.visualstudio.com/items?itemName=janisdd.vscode-edit-csv) extensions. 
 
 Please refrain to use Microsoft Excel, as it is not able to preserve the correct format of the document.
 
