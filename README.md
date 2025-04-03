@@ -41,5 +41,6 @@ Please refrain to use Microsoft Excel, as it is not able to preserve the correct
 - [x] Provide a comprehensive example of database files, with at least three questions per type per topic
 - [x] Simplify and coordinate topic labels
 - [ ] Modify ExamManager to allow selecting a databases, points and structure files  
+- [ ] Modify assembling algorithm to mutually exlude questions with the same title 
 - [ ] Store a way to understand the solution procedure in one string (example: correct choice, python code for numerical calculation, reasoning for true/false)
 - [ ] Create a grading grid to assign different points to different types of numerical questions. For example: straightforward solution process should be worth less than inverse solution process, or one that requires a more complex derivations where certain things simplify.
