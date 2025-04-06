@@ -40,6 +40,11 @@ Please refrain to use Microsoft Excel, as it is not able to preserve the correct
 
 - [x] Provide a comprehensive example of database files, with at least three questions per type per topic
 - [x] Simplify and coordinate topic labels
+- [ ] Include examples of in the README Structures.json and Points.json files
+- [ ] Include examples of implementation of the ExamManager from a dedicated folder
+- [ ] Include question titles in the Blueprint
+- [ ] Include options and solution in the Blueprint
+- [ ] Allow to go back to the proposed blueprint after selecting "no" to the exam approval
 - [ ] Modify ExamManager to allow selecting a databases, points and structure files  
 - [ ] Modify assembling algorithm to mutually exlude questions with the same title 
 - [ ] Store a way to understand the solution procedure in one string (example: correct choice, python code for numerical calculation, reasoning for true/false)
