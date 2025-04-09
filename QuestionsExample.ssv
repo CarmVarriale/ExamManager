@@ -1,0 +1,44 @@
+topic;type;title;variant;counter;last_used;review_status;wording;solution
+art;multiple_choice;Art;1;1;250409;review_needed;"Which artist is known for the ""Campbell's Soup Cans""?";Andy Warhol
+art;multiple_choice;Art;2;0;000000;review_needed;"Who painted the ""Last Supper""?";Leonardo da Vinci
+art;multiple_choice;History;1;0;000000;review_needed;"Who painted the ""Mona Lisa""?";Leonardo da Vinci
+art;multiple_choice;History;2;1;250409;review_needed;Which art movement is associated with Claude Monet?;Impressionism
+art;multiple_choice;Movies;1;0;000000;review_needed;"Who directed the movie ""Inception""?";Christopher Nolan
+art;multiple_choice;Movies;2;0;000000;review_needed;Which movie won the Academy Award for Best Picture in 1994?;Forrest Gump
+art;multiple_choice;Music;1;0;000000;review_needed;"Who composed the ""Fifth Symphony""?";Ludwig van Beethoven
+art;multiple_choice;Music;2;1;250409;review_needed;Which instrument has 88 keys?;Piano
+art;true_false;Art;1;0;000000;review_needed;"The ""Starry Night"" was painted by Vincent van Gogh";true
+art;true_false;Art;2;0;000000;review_needed;"The ""Scream"" was painted by Edvard Munch";true
+art;true_false;Music;1;1;250409;review_needed;Beethoven was deaf when he composed his later works;true
+athletics;multiple_choice;Sports;1;0;000000;review_needed;Which country won the FIFA World Cup in 2018?;France
+athletics;multiple_choice;Sports;2;0;000000;review_needed;How many players are on a standard soccer team?;11
+geography;multiple_choice;World Capitals;1;1;250409;review_needed;What is the capital of France?;Paris
+geography;multiple_choice;World Capitals;2;0;000000;review_needed;What is the capital of Japan?;Tokyo
+geography;true_false;Planet Earth;1;1;250409;review_needed;The Earth is the third planet from the Sun;true
+geography;true_false;Planet Earth;2;0;000000;review_needed;The Earth has two moons;false
+humanistic;multiple_choice;Literature;1;0;000000;review_needed;"Who wrote ""Romeo and Juliet""?";William Shakespeare
+humanistic;multiple_choice;Literature;2;0;000000;review_needed;"Who is the author of ""1984""?";George Orwell
+humanistic;true_false;History;1;0;000000;review_needed;The Great Wall of China was built in the 20th century;false
+humanistic;true_false;History;2;0;000000;review_needed;The Roman Empire fell in 476 AD;true
+science;multiple_choice;Music;1;0;000000;review_needed;What is the term for a group of musicians playing together?;Ensemble
+science;multiple_choice;Music;2;1;250409;review_needed;What is the term for the speed of a piece of music?;Tempo
+science;multiple_choice;Music;3;0;000000;review_needed;What is the name of the musical symbol that indicates a pause?;Rest
+science;multiple_choice;Physics;1;0;000000;review_needed;Which gas do plants primarily use for photosynthesis?;Carbon Dioxide
+science;multiple_choice;Physics;2;1;250409;review_needed;What is the chemical symbol for water?;H2O
+science;numerical;Chemistry;1;1;250409;review_needed;What is the atomic number of oxygen?;8
+science;numerical;Chemistry;2;0;000000;review_needed;How many hydrogen atoms are in a molecule of methane (CH4)?;4
+science;numerical;Mathematics;1;0;000000;review_needed;What is the square root of 144?;12
+science;numerical;Mathematics;2;0;000000;review_needed;What is the result of 15 multiplied by 8?;120
+science;numerical;Music;1;0;000000;review_needed;What is the frequency of the note A4 in Hz?;440
+science;numerical;Music;2;1;250409;review_needed;How many strings does a standard violin have?;4
+science;numerical;Physics;1;0;000000;review_needed;What is the speed of light in a vacuum (in km/s)?;300000
+science;numerical;Physics;2;0;000000;review_needed;What is the acceleration due to gravity on Earth (in m/s^2)?;9.8
+science;true_false;Economics;1;1;250409;review_needed;Inflation refers to a general increase in prices;true
+science;true_false;Economics;2;0;000000;review_needed;GDP stands for Gross Domestic Product;true
+science;true_false;Music;1;0;000000;review_needed;Mozart was a contemporary of Bach;false
+science;true_false;Nature;1;0;000000;review_needed;Mount Everest is the tallest mountain in the world;true
+science;true_false;Nature;2;0;000000;review_needed;The Amazon River is the longest river in the world;false
+science;true_false;Space;1;0;000000;review_needed;Jupiter is the largest planet in the Solar System;true
+science;true_false;Space;2;1;250409;review_needed;The Sun is a planet;false
+technology;true_false;Technology;1;0;000000;review_needed;The first iPhone was released in 2007;true
+technology;true_false;Technology;2;0;000000;review_needed;The programming language Python was named after a snake;false
