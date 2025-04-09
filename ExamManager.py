@@ -1,112 +1,71 @@
 import json
-import random
 import pandas as pd
 from datetime import datetime
-from os.path import join
 
-from Exam import Exam
-from Question import Question
-
-
-def load_json(file):
-    with open(file, 'r') as f:
-        return json.load(f)
+from Exam import Exam, QUESTION_PARAMS
 
 class ExamManager:
-    def __init__(self, database_folder_path):
-        """
-        Initialize the ExamManager with the path to the exam database folder.
-        The folder should contain the following files:
-        - Questions.ssv
-        - Points.json
-        - Structure.json
-        """
-        self.questions_file = join(database_folder_path, "Questions.ssv")
-        self.points_file = join(database_folder_path, "Points.json")
-        self.structure_file = join(database_folder_path, "Structure.json")
-        self.questions = self.load_questions(self.questions_file)
-        self.points = load_json(self.points_file)
-        self.requirements = load_json(self.structure_file)
+    """Class to create and manage the exams"""
+    def __init__(self, questions_file, points_file, structure_file):
+        self.qfile = questions_file 
+        self.points = json.load(open(points_file, 'r'))
+        self.structure = json.load(open(structure_file, 'r'))
+        self.qbank = self.parse_questionbank_from_file(self.qfile)
 
-    def load_questions(self, file):
-        df = pd.read_csv(file, delimiter=';', dtype=str)
-        questions = []
-        for _, row in df.iterrows():
-            last = row["last"]
-            if pd.isna(last):
-                last = datetime.now().strftime(r'%y%m%d')
-            else:
-                last = datetime.strptime(last, r'%y%m%d').strftime(r'%y%m%d')
-            questions.append(Question(
-                type=row["type"],
-                topic=row["topic"],
-                title=row["title"],
-                wording=row["wording"],
-                choices=row["choices"],
-                solution=row["solution"],
-                explanation=row["explanation"],
-                status=row["status"],
-                counter=int(row["counter"]),
-                last=last
-            ))
-        return questions
-    
-    def sort_questions(self, *args):
-        VALID_HEADERS = ["type", "topic", "title", "wording", "choices", "solution", "explanation", "status", "counter", "last"]
+    def parse_questionbank_from_file(self, question_file):
+        """Parse the question bank from a .ssv file and add points to each question based on its type and topic. The points are read from a json file."""
+        qbank = pd.read_csv(question_file, delimiter=';', dtype=str)
+        qbank["points"] = qbank.apply(
+            lambda q: 
+                self.points[q["type"]].get(
+                    q["topic"], 
+                    self.points[q["type"]].get("default", None)
+            ), 
+            axis=1
+        )
+        return qbank
+        
+    def sort_questionbank_by(self, *args):
+        """Sort the question bank by the given parameters. The parameters must be valid headers in the question bank."""
         for arg in args:
-            if arg not in VALID_HEADERS:
-                raise ValueError(f"Invalid header '{arg}'. Valid headers are: {', '.join(VALID_HEADERS)}")
-        df = pd.read_csv(self.questions_file, delimiter=';', dtype=str)
-        df = df.sort_values(by=list(args))
-        df.to_csv(self.questions_file, sep=';', index=False)
-
-    def save_questions(self):
-        df = pd.DataFrame([q.to_dict() for q in self.questions])
-        df.to_csv(self.questions_file, sep=';', index=False)
-
-    def replace_question(self, exam, index_to_replace):
-        question_to_replace = exam.questions[index_to_replace - 1]
-        question_pool = [
-            q for q in self.questions
-            if q not in exam.questions 
-            and q != question_to_replace 
-            and q.type == question_to_replace.type 
-            and q.topic == question_to_replace.topic
-        ]
-        if not question_pool:
-            print(f"No replacement question available for "
-                  f"type '{question_to_replace.type}' and "
-                  f"topic '{question_to_replace.topic}'.")
-            return False
-        replacement_question = random.choice(question_pool)
-        exam.replace_question(index_to_replace - 1, replacement_question)
-        return True
+            if arg not in QUESTION_PARAMS:
+                raise ValueError(f"Invalid param '{arg}'. Valid headers are: {', '.join(QUESTION_PARAMS)}")
+        self.qbank = self.qbank.sort_values(by=list(args))
+        
+    def save_questionbank_to_file(self):
+        """Save the question bank to a .ssv file. The points column is dropped before saving as it depends on the provided points file, which may change for different exams."""
+        self.qbank.drop(columns=["points"], inplace=True)
+        self.sort_questionbank_by("topic","type","title", "variant", "counter", "last_used")
+        self.qbank.to_csv(self.qfile, sep=';', index=False)
 
     def create_exam(self, exam_name):
+        """Create an exam based on the provided structure. The structure is a dictionary where the keys are topics and the values are dictionaries with question types as keys and the number of questions as values.
+        
+        Exam questions are selected randomly from the question bank, under the constraints of the structure. The questions are sorted by their counter and last_used date, and duplicate variants are removed based on the title.
+        """
         exam = Exam(exam_name)
-        for topic, types in self.requirements.items():
-            for type, count in types.items():
-                question_pool = sorted(
-                    [q for q in self.questions 
-                     if q.type == type 
-                     and q.topic == topic],
-                    key=lambda q: q.counter
-                )
-                if len(question_pool) < count:
+        for topic, qtypes in self.structure.items():
+            for qtype, qtypecount in qtypes.items():
+                qpool = self.qbank[
+                    (self.qbank["type"] == qtype) & 
+                    (self.qbank["topic"] == topic)
+                ]
+                qpool = qpool.sample(frac=1)
+                qpool = qpool.sort_values(by=["counter","last_used"])
+                qpool = qpool.drop_duplicates(subset=["title"], keep="first")
+                
+                if len(qpool) < qtypecount:
                     raise ValueError(
-                        "Not enough questions of type '{}' "
-                        "for topic '{}' available.".format(type, topic))
+                        f"Not enough questions of type '{qtype}' "
+                        f"for topic '{topic}' available."
+                    )
 
-                selected_questions = question_pool[:count]
-                for question in selected_questions:
-                    question.points = self.points[type].get(
-                        topic, 
-                        self.points[type].get("default", 1))
-                    exam.add_question(question)
+                selected_questions = qpool.head(qtypecount)
+                exam.add_questions(selected_questions)
         return exam
 
     def review_exam(self, exam):
-        # Ask if the user wants to replace a question repeatedly until no
+        """Start an interactive review session where the user can approve or modify the exam by replacing questions with other of the same type and topic."""
         while True:
             exam.print_blueprint()
             index_to_replace = int(
@@ -122,26 +81,56 @@ class ExamManager:
         # Ask to confirm the exam after user approval
         user_input = input(
             "\nDo you approve the exam?"
-            "\n- If 'yes', question counters and dates are going to be updated,"
+            "\n- If 'yes', question counters and last_used date are going to be updated in the .ssv file,"
             " and the blueprint is going to be exported."
-            "\n- If 'no', nothing happens\n").strip().lower()
+            "\n- If 'no', the proposed exam blueprint is discarded"
+            "\n- If 'back', you go back to replacing questions\n").strip().lower()
         if user_input == "yes":
             self.approve_exam(exam)
-            print("Exam approved and usage data updated.")
-            print("Exam blueprint and questions exported.")
+        elif user_input == "no":
+            print("Exam not approved. Blueprint discarded.")
+        elif user_input == "back":
+            print("Going back to question replacement.")
+            self.review_exam(exam)
         else:
-            print("Exam not confirmed. Nothing happens.")
-
+            print("Invalid input. Please try again.")
+            
+    def replace_question(self, exam, index_to_replace):
+        """Replace a question in the exam with another question of the same type and topic from the question bank."""
+        question_to_replace = exam.questions.iloc[index_to_replace - 1]
+        question_pool = self.qbank[
+            (self.qbank["type"] == question_to_replace["type"]) &
+            (self.qbank["topic"] == question_to_replace["topic"]) &
+            (~self.qbank.index.isin(exam.questions.index)) 
+        ]
+        if question_pool.empty:
+            print(f"No replacement question available for "
+              f"type '{question_to_replace['type']}' and "
+              f"topic '{question_to_replace['topic']}'.")
+            return False
+        question_pool = question_pool.sort_values(by="counter", ascending=True)
+        replacement_question = question_pool.sample(n=1).iloc[0]
+        exam.replace_question(index_to_replace - 1, replacement_question)
+        
     def approve_exam(self, exam):
-        exam.to_markdown()
-        exam.to_csv()
-        exam.to_pdf()
-        for question in exam.questions:
-            question.increment_counter()
-        self.save_questions()
+        """Approve the exam and update the question bank with the new counters and last_used dates. Export the exam blueprint to a .csv, markdown and .pdf file."""
+        exam.export_to_csv()
+        exam.export_blueprint_to_markdown()
+        exam.export_blueprint_to_pdf()
+        self.update_questionbank(exam)
+        self.save_questionbank_to_file()
+        print("Exam approved and question data updated.")
+        print("Exam blueprint and questions exported.")
+        
+    def update_questionbank(self, exam):
+        """Update the counter and last_used date in the question bank for all questions that appear in the approved exam."""
+        for index, question in exam.questions.iterrows():
+            question_index = self.qbank[
+                (self.qbank[["type", "topic", "title", "variant"]] == question[["type", "topic", "title", "variant"]]).all(axis=1)
+            ].index[0]
+            self.qbank.at[question_index, "counter"] = str(int(self.qbank.at[question_index, "counter"]) + 1)
+            self.qbank.at[question_index, "last_used"] = datetime.now().strftime(r"%y%m%d")
+        
 
 if __name__ == "__main__":
-    manager = ExamManager(".")
-    manager.sort_questions("topic","type","title")
-    exam = manager.create_exam("AE2230-I_Resit2_241204")
-    manager.review_exam(exam)
+    import main
