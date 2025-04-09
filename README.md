@@ -79,3 +79,4 @@ Contributions are welcome and encouraged through Issues and Pull Requests.
 For major changes, please open an issue first to discuss what you would like to change.
 
 ## Contributors
+
