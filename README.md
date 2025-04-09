@@ -57,7 +57,7 @@ See the `main.py` file for an executable example of how to use the `ExamManager`
     ```python -m venv .venv```
 
 5. Activate the virtual environment:
-   - On Windows: ```.\.venv\Scripts\activate```
+   - On Windows: ```.\.venv\Scripts\activate.bat```
    - On macOS/Linux: ```source .venv/bin/activate```
 
 6. Install the required dependencies:
