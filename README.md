@@ -75,7 +75,8 @@ The exam blueprint is exported to a CSV file, a Markdown file and a PDF file.
 You will have to manually define the exam in a virtual environment such as Mobius or Ans.
 
 ## Contribution
-Contributions are welcome and encouraged through Issues and Pull Requests.
+Contributions are welcome and encouraged through Issues and Pull Requests on Github, at [https://github.com/CarmVarriale/ExamManager](https://github.com/CarmVarriale/ExamManager)
+
 For major changes, please open an issue first to discuss what you would like to change.
 
 ## Contributors
@@ -87,13 +88,6 @@ For major changes, please open an issue first to discuss what you would like to 
             <img src=https://github.com/CarmVarriale.png width="100;"  style="border-radius:50%;align-items:center;justify-content:center;overflow:hidden;padding-top:10px" alt=Carmine Varriale/>
             <br />
             <sub style="font-size:14px"><b>Carmine Varriale</b></sub>
-        </a>
-    </td>
-    <td align="center" style="word-wrap: break-word; width: 150.0; height: 150.0">
-        <a href=https://github.com/kswannet>
-            <img src=https://github.com/kswannet.png width="100;"  style="border-radius:50%;align-items:center;justify-content:center;overflow:hidden;padding-top:10px" alt=Kilian Swannet/>
-            <br />
-            <sub style="font-size:14px"><b>Kilian Swannet</b></sub>
         </a>
     </td>
 </tr>
