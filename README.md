@@ -1,51 +1,81 @@
 # ExamManager
 
-The `ExamManager` repository is designed to create and manage exams consisting (for now) of true/false, multiple choice, and numerical questions. 
-It provides functionalities to load question banks from a CSV file, create exams based on specific requirements when it comes to questions per topic, and export the exam blueprint in various formats (Markdown, CSV, and PDF).
+This simple package provides simple functionalities to manage exam creation, review and monitoring through time.
+In a nuthsell:
+- create exams on the basis of a question bank, an exam structure file, and a points file
+- review the questions selected for the exam, and approve the exam before it is given to the students
+- keep track of the questions that have been used in the past, and their last date of use
+- export the exam blueprint in various formats (Markdown, CSV, and PDF)
+
+For the exam creation, a simple algorithm selects questions from the question bank on the basis of the provided exam structure, the amount of times a question has appeared before, the last time it has appeared, and a random seed.
+Question variants that assess the same skill or learning objective are prevented to appear in the exam.
 
 ## Structure
-
-- **ExamManager.py**: Contains the `ExamManager` class, which handles loading question banks, creating exam instances, reviewing questions, replacing questions, and approving exams. It also includes an example of use.
-- **Exam.py**: Contains the `Exam` class, which represents an exam and provides low-level methods to add, replace, and export questions.
-- **Question.py**: Contains the `Question` class, which represents a question and provides methods to increment use count, update the last date it was used, and convert to dictionary format.
-- **Questions.ssv**: A semicolon separated CSV file collecting questions and their relevant data categorized by type.
-- **Points.json**: A JSON file indicating the points assigned to each type of question.
-- **Structure.json**: A JSON file indicating the number of question and question types per topic to be used to assemble a given exam.
+- ``ExamManager.py``: Implements the `ExamManager` class, responsible for managing the exam lifecycle, including loading question banks, creating exams, reviewing and replacing questions, and approving exams. It also includes usage examples.
+- ``Exam.py``: Defines the `Exam` class, which encapsulates an exam's structure and provides low-level methods for adding, replacing, and exporting questions.
+- ``Questions.ssv``: A semicolon-separated file containing the question bank with all relevant question metadata, including a counter of how many times a question has been used and the last time it has been used in an approved exam.
+- ``Points.json``: A JSON file specifying the points assigned to each question type and topic, and defaults points per type.
+- ``Structure.json``: A JSON file defining the exam structure in terms of order of topics, and number and types of questions per topic.
 
 ## Usage
-  
-```python
-manager = ExamManager("path/to/database/folder")
-```
-The database folder should contain the following files: `Questions.ssv`, `Points.json`, `Structure.json`
 
-```python
-exam = manager.create_exam("ExamName/Type/Date")
-manager.review_exam(exam)
-```
-The `review_exam` method starts an interactive review session with the user.
+See the `main.py` file for an executable example of how to use the `ExamManager` class
+
+1. Create an exam manager instance which can create and manage exams on the basis of a selected question bank, points file and structure file:
+    ```python
+    from ExamManager import ExamManager
+
+    manager = ExamManager(
+        "QuestionsExample.ssv",
+        "PointsExample.json", 
+        "StructureExample.json") 
+    ```
+
+1. Create the instance of an exam and give it a representative name:
+    ```python
+    exam = manager.create_exam("AE2230-I_Resit2_241204")
+    ```
+
+1. Start an interactive session to review the questions selected for the exam, replace some of them if needed, and eventually approve and export the exam:
+    ```python
+    exam.review_questions()
+    ```
+
+## Installation
+
+1. Install [Python 3.12 or higher](https://www.python.org/downloads/) and optionally add it to your PATH.
+2. Clone the repository from Github: 
+
+    ```git clone https://github.com/CarmVarriale/ExamManager```
+
+3. Navigate to the cloned directory:
+
+    ```cd your/path/to/ExamManager```
+
+4. Create a virtual environment (optional but recommended):
+
+    ```python -m venv .venv```
+
+5. Activate the virtual environment:
+   - On Windows: ```.\.venv\Scripts\activate```
+   - On macOS/Linux: ```source .venv/bin/activate```
+
+6. Install the required dependencies:
+   - On Windows: ```pip install -r requirements.txt```
+   - On macOS/Linux: ```pip install -r requirements.txt```
 
 ## Managing the Question Bank
-You can view and manipulate the `Questions.ssv` file by opening it in VSCode using the [Rainbow CSV](https://marketplace.visualstudio.com/items?itemName=mechatroner.rainbow-csv) and the [Edit CSV](https://marketplace.visualstudio.com/items?itemName=janisdd.vscode-edit-csv) extensions. 
+You can view and manipulate the `Questions.ssv` file by opening it in the [VSCode](https://code.visualstudio.com/) editor using the [Rainbow CSV](https://marketplace.visualstudio.com/items?itemName=mechatroner.rainbow-csv) and the [Edit CSV](https://marketplace.visualstudio.com/items?itemName=janisdd.vscode-edit-csv) extensions. 
 
-Please refrain to use Microsoft Excel, as it is not able to preserve the correct format of the document.
+Please DO NOT to use Microsoft Excel, as it is not able to preserve the correct format of the document.
 
 ## Export Formats
 
-- **Markdown**: The exam blueprint is exported to a Markdown file.
-- **CSV**: The exam blueprint is exported to a CSV file.
-- **PDF**: The exam blueprint is exported to a PDF file.
+The exam blueprint is exported to a CSV file, a Markdown file and a PDF file.
+You will have to manually define the exam in a virtual environment such as Mobius or Ans.
 
-## TODO
+## Contribution
+Contributions are welcome and encouraged through Issues and Pull Requests.
+For major changes, please open an issue first to discuss what you would like to change.
 
-- [x] Provide a comprehensive example of database files, with at least three questions per type per topic
-- [x] Simplify and coordinate topic labels
-- [ ] Include examples of in the README Structures.json and Points.json files
-- [ ] Include examples of implementation of the ExamManager from a dedicated folder
-- [ ] Include question titles in the Blueprint
-- [ ] Include options and solution in the Blueprint
-- [ ] Allow to go back to the proposed blueprint after selecting "no" to the exam approval
-- [ ] Modify ExamManager to allow selecting a databases, points and structure files  
-- [ ] Modify assembling algorithm to mutually exlude questions with the same title 
-- [ ] Store a way to understand the solution procedure in one string (example: correct choice, python code for numerical calculation, reasoning for true/false)
-- [ ] Create a grading grid to assign different points to different types of numerical questions. For example: straightforward solution process should be worth less than inverse solution process, or one that requires a more complex derivations where certain things simplify.
+## Contributors
