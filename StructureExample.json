@@ -1,0 +1,15 @@
+{
+  "art": {
+    "true_false": 1,
+    "multiple_choice": 3
+  },
+  "science": {
+    "true_false": 2,
+    "multiple_choice": 2,
+    "numerical": 2
+  },
+  "geography": {
+    "true_false": 1,
+    "multiple_choice": 1
+  }
+}
