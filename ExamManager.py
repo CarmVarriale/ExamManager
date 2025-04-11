@@ -133,4 +133,4 @@ class ExamManager:
         
 
 if __name__ == "__main__":
-    import main
+    import example.main

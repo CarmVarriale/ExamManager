@@ -11,5 +11,11 @@
   "geography": {
     "true_false": 1,
     "multiple_choice": 1
+  },
+  "humanities": {
+    "multiple_choice": 2
+  },
+  "technology": {
+    "true_false": 1
   }
 }
